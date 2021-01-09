@@ -93,15 +93,36 @@ export default postcss.plugin('postcss-plugin-px2rem', options => {
       // 1st check exclude
       if (opts.exclude && css.source.input.file && css.source.input.file.match(opts.exclude) !== null) return;
       // 2st check 'px'
-      if (_decl.value.indexOf('px') === -1) return;
+      if (!_decl.value.match(/px/i)) return;
+      if (_decl.parent.selector.match(/^\[data-dpr/)) return;
       // 3nd check property black list
       if (blacklistedProp(opts.propBlackList, _decl.prop)) return;
       // 4rd check property white list
       if (opts.propWhiteList.length && opts.propWhiteList.indexOf(_decl.prop) === -1) return;
       // 5th check seletor black list
       if (blacklistedSelector(opts.selectorBlackList, _decl.parent.selector)) return;
+      let value = null;
+      const selector = _decl.parent.selector
+      if (_decl.value.match(/PX/)) {
+        // 生成对应的dpr 的值 手机使用px
+        for (let j = 1; j <= 3; j++) {
+          const dprSelector = postcss.parse(`[data-dpr="${j}"] ${selector} { ${_decl.prop}: ${_decl.value.replace(/[\d]+/g, (match) => {
+            return match / 2 * j
+          }).replace(/PX/g, 'px')} }`).first
+          _decl.parent.parent.push(dprSelector)
+        }
 
-      const value = _decl.value.replace(pxRegex, pxReplace);
+        // ipad 使用px
+        const ipadMedia = postcss.parse(`@media screen
+        and (min-device-width : 768px) {
+          ${selector}{
+            ${_decl.prop}: ${_decl.value.replace(pxRegex, pxReplace)}!important;
+          }
+        }`)
+        _decl.parent.parent.push(ipadMedia)
+      } else {
+        value = _decl.value.replace(pxRegex, pxReplace);
+      }
 
       // if rem unit already exists, do not add or replace
       if (declarationExists(_decl.parent, _decl.prop, value)) return;
