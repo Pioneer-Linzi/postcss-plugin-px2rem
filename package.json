@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ant-tool/postcss-plugin-px2rem-enhanced.git"
+    "url": "https://github.com/Pioneer-Linzi/postcss-plugin-px2rem-enhanced"
   },
   "keywords": [
     "px",
@@ -24,9 +24,9 @@
   "author": "linlin_zhao@yeah.net",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ant-tool/postcss-plugin-px2rem/issues"
+    "url": "https://github.com/Pioneer-Linzi/postcss-plugin-px2rem-enhanced/issues"
   },
-  "homepage": "https://github.com/ant-tool/postcss-plugin-px2rem#readme",
+  "homepage": "https://github.com/Pioneer-Linzi/postcss-plugin-px2rem-enhanced#readme",
   "dependencies": {
     "postcss": "^5.0.21"
   },
