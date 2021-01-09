@@ -1,4 +1,4 @@
-# postcss-plugin-px2rem
+# postcss-plugin-px2rem-enhanced
 
 [![NPM version](https://img.shields.io/npm/v/postcss-plugin-px2rem.svg?style=flat)](https://npmjs.org/package/postcss-plugin-px2rem)
 [![Build Status](https://img.shields.io/travis/ant-tool/postcss-plugin-px2rem.svg?style=flat)](https://travis-ci.org/ant-tool/postcss-plugin-px2rem)
@@ -6,7 +6,7 @@
 [![NPM downloads](http://img.shields.io/npm/dm/postcss-plugin-px2rem.svg?style=flat)](https://npmjs.org/package/postcss-plugin-px2rem)
 [![Dependency Status](https://david-dm.org/ant-tool/postcss-plugin-px2rem.svg)](https://david-dm.org/ant-tool/postcss-plugin-px2rem)
 
-postcss plugin px2rem.
+postcss plugin px2rem-enhanced.
 
 <img align="right" width="135" height="95"
      title="Philosopher’s stone, logo of PostCSS"
@@ -15,6 +15,37 @@ postcss plugin px2rem.
 ## Features
 
 A plugin for PostCSS that generates rem units from pixel units.
+本插件是 postcss plugin px2rem 的加强版，主要与他的区别在于，如果 px 使用 PX 的话，会转会成
+
+```
+// 转换前
+
+.main__title[data-v-31bb23d8] {
+    font-size: 40PX;
+    text-align: left;
+    line-height: 0.66667rem;
+    margin-bottom: 0.46667rem;
+}
+
+// 转换后
+.main__title[data-v-31bb23d8] {
+    font-size: null;
+    text-align: left;
+    line-height: 0.66667rem;
+    margin-bottom: 0.46667rem;
+}
+[data-dpr="1"] .main__title[data-v-31bb23d8] { font-size: 20px }
+[data-dpr="2"] .main__title[data-v-31bb23d8] { font-size: 40px }
+[data-dpr="3"] .main__title[data-v-31bb23d8] { font-size: 60px }
+@media screen
+        and (min-device-width : 768px) {
+          .main__title[data-v-31bb23d8]{
+            font-size: 0.53333rem!important;
+          }
+        }
+```
+
+这样转换是为了 有一些 rem有小数的时候 在android 计算是有偏差的，特别是字体，同一个数值，可能垂直居中都会有上下的偏差，使用px 就没有这个问题，所以使用dpr 进行适配，但是 转后为 dpr 之后在ipad 上的大小会与rem 的偏差比较大，所以，使用媒体查询来解决这个问题。 
 
 ## Installation
 
